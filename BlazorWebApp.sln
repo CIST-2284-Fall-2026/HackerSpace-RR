@@ -2,9 +2,9 @@
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.0.0
 MinimumVisualStudioVersion = 16.0.0.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWebApp", "BlazorWebApp\BlazorWebApp.csproj", "{CE74E55C-9176-4384-9C21-8677127AE910}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerSpaceRR", "HackerSpaceRR\HackerSpaceRR.csproj", "{CE74E55C-9176-4384-9C21-8677127AE910}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWebApp.Client", "BlazorWebApp.Client\BlazorWebApp.Client.csproj", "{060FA765-2C58-41CE-BB31-D2976D5EC0ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerSpaceRR.Client", "HackerSpaceRR.Client\HackerSpaceRR.Client.csproj", "{060FA765-2C58-41CE-BB31-D2976D5EC0ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
