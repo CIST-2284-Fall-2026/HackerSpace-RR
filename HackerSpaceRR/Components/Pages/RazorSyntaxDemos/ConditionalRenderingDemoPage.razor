@@ -1,0 +1,17 @@
+﻿@page "/conditional-rendering"
+
+<h3>Conditional Rendering Demo Page</h3>
+
+@if (isLoggedIn)
+{
+    <h2>Welcome @userName!</h2>
+}
+else
+{
+    <h2>Please log in!</h2>
+}
+
+@code {
+    bool isLoggedIn = true;
+    string userName = "Rob";
+}
