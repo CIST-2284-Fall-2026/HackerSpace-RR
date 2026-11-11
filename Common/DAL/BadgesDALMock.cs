@@ -5,6 +5,7 @@ namespace Common.DAL;
 
 public sealed class BadgesDALMock : IBadgesDAL
 {
+    private readonly object gate = new();
     private readonly List<Badge> badges =
     [
         new()
@@ -30,8 +31,50 @@ public sealed class BadgesDALMock : IBadgesDAL
         }
     ];
 
-    public Task<List<Badge>> GetBadgesAsync() =>
-        Task.FromResult(badges.Select(Copy).ToList());
+    public Task<List<Badge>> GetBadgesAsync()
+    {
+        lock (gate)
+        {
+            return Task.FromResult(badges.Select(Copy).ToList());
+        }
+    }
+
+    public Task<Badge?> GetBadgeByIdAsync(Guid id)
+    {
+        lock (gate)
+        {
+            var badge = badges.Find(badge => badge.Id == id);
+            return Task.FromResult(badge is null ? null : Copy(badge));
+        }
+    }
+
+    public Task AddBadgeAsync(Badge badge)
+    {
+        lock (gate)
+        {
+            var newBadge = Copy(badge);
+            newBadge.Id = Guid.NewGuid();
+            badges.Add(newBadge);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public Task UpdateBadgeAsync(Badge badge)
+    {
+        lock (gate)
+        {
+            var index = badges.FindIndex(existingBadge => existingBadge.Id == badge.Id);
+            if (index < 0)
+            {
+                throw new KeyNotFoundException("The badge is no longer available.");
+            }
+
+            badges[index] = Copy(badge);
+        }
+
+        return Task.CompletedTask;
+    }
 
     private static Badge Copy(Badge badge) => new()
     {

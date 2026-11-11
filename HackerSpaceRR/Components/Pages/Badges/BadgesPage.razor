@@ -1,6 +1,7 @@
 @page "/badges"
 @rendermode InteractiveServer
 @inject IBadgesDAL BadgesDAL
+@inject NavigationManager Navigation
 
 <PageTitle>Badges</PageTitle>
 <h1>Badges</h1>
@@ -21,10 +22,13 @@ else
         {
             <li class="list-group-item">
                 @badge.Title — @(badge.IsVisible ? "Published" : "In review")
+                <button type="button" class="btn btn-sm btn-primary ms-2" @onclick="() => EditBadge(badge.Id)">Edit</button>
             </li>
         }
     </ul>
 }
+
+<button type="button" class="btn btn-success mt-3" @onclick="CreateBadge">Create New Badge</button>
 
 @code {
     private List<Badge>? badges;
@@ -33,4 +37,8 @@ else
     {
         badges = await BadgesDAL.GetBadgesAsync();
     }
+
+    private void CreateBadge() => Navigation.NavigateTo("/badge-edit");
+
+    private void EditBadge(Guid id) => Navigation.NavigateTo($"/badge-edit/{id}");
 }
