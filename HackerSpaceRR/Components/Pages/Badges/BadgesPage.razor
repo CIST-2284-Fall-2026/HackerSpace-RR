@@ -23,6 +23,7 @@ else
             <li class="list-group-item">
                 @badge.Title — @(badge.IsVisible ? "Published" : "In review")
                 <button type="button" class="btn btn-sm btn-primary ms-2" @onclick="() => EditBadge(badge.Id)">Edit</button>
+                <button type="button" class="btn btn-sm btn-outline-primary ms-1" @onclick="() => ViewBadge(badge)">View</button>
             </li>
         }
     </ul>
@@ -30,8 +31,27 @@ else
 
 <button type="button" class="btn btn-success mt-3" @onclick="CreateBadge">Create New Badge</button>
 
+<section class="mt-4" aria-labelledby="badge-details-heading">
+    <h2 id="badge-details-heading">Badge details</h2>
+    @if (selectedBadge is null)
+    {
+        <p>Select a badge to see its details.</p>
+    }
+    else
+    {
+        <dl>
+            <dt>ID</dt><dd>@selectedBadge.Id</dd>
+            <dt>Title</dt><dd>@selectedBadge.Title</dd>
+            <dt>Description</dt><dd>@selectedBadge.Description</dd>
+            <dt>Turn-in instructions</dt><dd>@selectedBadge.TurnInInstructions</dd>
+            <dt>Visibility</dt><dd>@(selectedBadge.IsVisible ? "Published" : "In review")</dd>
+        </dl>
+    }
+</section>
+
 @code {
     private List<Badge>? badges;
+    private Badge? selectedBadge;
 
     protected override async Task OnInitializedAsync()
     {
@@ -41,4 +61,6 @@ else
     private void CreateBadge() => Navigation.NavigateTo("/badge-edit");
 
     private void EditBadge(Guid id) => Navigation.NavigateTo($"/badge-edit/{id}");
+
+    private void ViewBadge(Badge badge) => selectedBadge = badge;
 }
