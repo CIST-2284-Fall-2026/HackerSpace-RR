@@ -76,6 +76,16 @@ public sealed class BadgesDALMock : IBadgesDAL
         return Task.CompletedTask;
     }
 
+    public Task DeleteBadgeAsync(Guid id)
+    {
+        lock (gate)
+        {
+            badges.RemoveAll(badge => badge.Id == id);
+        }
+
+        return Task.CompletedTask;
+    }
+
     private static Badge Copy(Badge badge) => new()
     {
         Id = badge.Id,

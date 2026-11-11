@@ -24,12 +24,22 @@ else
                 @badge.Title — @(badge.IsVisible ? "Published" : "In review")
                 <button type="button" class="btn btn-sm btn-primary ms-2" @onclick="() => EditBadge(badge.Id)">Edit</button>
                 <button type="button" class="btn btn-sm btn-outline-primary ms-1" @onclick="() => ViewBadge(badge)">View</button>
+                <button type="button" class="btn btn-sm btn-outline-danger ms-1" @onclick="() => RequestDelete(badge)">Delete</button>
             </li>
         }
     </ul>
 }
 
 <button type="button" class="btn btn-success mt-3" @onclick="CreateBadge">Create New Badge</button>
+
+@if (badgeToDelete is not null)
+{
+    <div class="alert alert-warning mt-3" role="alert">
+        <p>Delete <strong>@badgeToDelete.Title</strong>?</p>
+        <button type="button" class="btn btn-danger" @onclick="ConfirmDelete">Confirm Delete</button>
+        <button type="button" class="btn btn-secondary" @onclick="CancelDelete">Cancel Delete</button>
+    </div>
+}
 
 <section class="mt-4" aria-labelledby="badge-details-heading">
     <h2 id="badge-details-heading">Badge details</h2>
@@ -52,6 +62,7 @@ else
 @code {
     private List<Badge>? badges;
     private Badge? selectedBadge;
+    private Badge? badgeToDelete;
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,4 +74,25 @@ else
     private void EditBadge(Guid id) => Navigation.NavigateTo($"/badge-edit/{id}");
 
     private void ViewBadge(Badge badge) => selectedBadge = badge;
+
+    private void RequestDelete(Badge badge) => badgeToDelete = badge;
+
+    private async Task ConfirmDelete()
+    {
+        if (badgeToDelete is not Badge badge)
+        {
+            return;
+        }
+
+        CancelDelete();
+        await BadgesDAL.DeleteBadgeAsync(badge.Id);
+        badges = await BadgesDAL.GetBadgesAsync();
+
+        if (selectedBadge?.Id == badge.Id)
+        {
+            selectedBadge = null;
+        }
+    }
+
+    private void CancelDelete() => badgeToDelete = null;
 }

@@ -8,4 +8,5 @@ public interface IBadgesDAL
     Task<Badge?> GetBadgeByIdAsync(Guid id);
     Task AddBadgeAsync(Badge badge);
     Task UpdateBadgeAsync(Badge badge);
+    Task DeleteBadgeAsync(Guid id);
 }
