@@ -19,7 +19,7 @@ namespace Common.Models
 
         private float rpm = 0.0f;
 
-        [Required]
+        [Required, Range(0, 100000)]
         public float RPM
         {
             get { return rpm; }
@@ -32,7 +32,7 @@ namespace Common.Models
 
         private int numFlutes;
 
-        [Required, Range(1, 30)]
+        [Required, Range(1, int.MaxValue, ErrorMessage = "Must have at least one flute.")]
         public int NumFlutes
         {
             get { return numFlutes; }
@@ -45,7 +45,7 @@ namespace Common.Models
 
         private float chipLoad;
 
-        [Required, Range(0.00001, float.MaxValue)]
+        [Required, Range(0, float.MaxValue)]
         public float ChipLoad
         {
             get { return chipLoad; }

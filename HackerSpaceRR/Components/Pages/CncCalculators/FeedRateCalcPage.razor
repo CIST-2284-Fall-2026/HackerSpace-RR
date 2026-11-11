@@ -8,13 +8,15 @@
 
 <p>This is the Feed Rate Calculator page.</p>
 
-<EditForm Model="feedRateCalc" OnSubmit="OnSubmitFeedRateData">
+<EditForm Model="feedRateCalc" OnValidSubmit="OnSubmitFeedRateData">
+    <DataAnnotationsValidator />
     <div class="mb-3">
         <label class="form-label" for="rpm">RPM</label>
         <InputNumber class="form-control"
                      step="any"
                      id="rpm"
                      @bind-Value="feedRateCalc.RPM" />
+        <ValidationMessage For="@(() => feedRateCalc.RPM)" />
     </div>
 
     <div class="mb-3">
@@ -22,6 +24,7 @@
         <InputNumber class="form-control"
                      id="numFlutes"
                      @bind-Value="feedRateCalc.NumFlutes" />
+        <ValidationMessage For="@(() => feedRateCalc.NumFlutes)" />
     </div>
 
     <div class="mb-3">
@@ -30,6 +33,7 @@
                      step="any"
                      id="chipLoad"
                      @bind-Value="feedRateCalc.ChipLoad" />
+        <ValidationMessage For="@(() => feedRateCalc.ChipLoad)" />
     </div>
 
     <div class="mb-3">
@@ -37,6 +41,7 @@
         <InputText class="form-control"
                      id="units"
                      @bind-Value="feedRateCalc.Units" />
+        <ValidationMessage For="@(() => feedRateCalc.Units)" />
     </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>
