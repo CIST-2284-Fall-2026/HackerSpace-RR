@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Common.Models
 {
     public class CNCFeedRateCalc
@@ -17,6 +19,7 @@ namespace Common.Models
 
         private float rpm = 0.0f;
 
+        [Required]
         public float RPM
         {
             get { return rpm; }
@@ -29,6 +32,7 @@ namespace Common.Models
 
         private int numFlutes;
 
+        [Required, Range(1, 30)]
         public int NumFlutes
         {
             get { return numFlutes; }
@@ -41,6 +45,7 @@ namespace Common.Models
 
         private float chipLoad;
 
+        [Required, Range(0.00001, float.MaxValue)]
         public float ChipLoad
         {
             get { return chipLoad; }
@@ -51,6 +56,7 @@ namespace Common.Models
             }
         }
 
+        [Required, AllowedValues("mm", "in", "feet", "meters")]
         public string Units { get; set; } = "mm";
 
         public float FeedRate { get; private set; }
