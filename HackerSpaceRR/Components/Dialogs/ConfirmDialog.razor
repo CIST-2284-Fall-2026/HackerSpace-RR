@@ -1,0 +1,26 @@
+@if (IsOpen)
+{
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal fade show d-block" role="dialog" aria-modal="true" aria-label="@Title">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-5">@Title</h2>
+                </div>
+                <div class="modal-body">@ChildContent</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="OnCancel">Cancel</button>
+                    <button type="button" class="btn btn-danger" @onclick="OnConfirm">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public bool IsOpen { get; set; }
+    [Parameter] public string Title { get; set; } = "Confirm";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public EventCallback OnConfirm { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+}
