@@ -1,0 +1,21 @@
+<section class="mt-4" aria-labelledby="badge-details-heading">
+    <h2 id="badge-details-heading">Badge details</h2>
+    @if (SelectedBadge is null)
+    {
+        <p>Select a badge to see its details.</p>
+    }
+    else
+    {
+        <dl>
+            <dt>ID</dt><dd>@SelectedBadge.Id</dd>
+            <dt>Title</dt><dd>@SelectedBadge.Title</dd>
+            <dt>Description</dt><dd>@SelectedBadge.Description</dd>
+            <dt>Turn-in instructions</dt><dd>@SelectedBadge.TurnInInstructions</dd>
+            <dt>Visibility</dt><dd>@(SelectedBadge.IsVisible ? "Published" : "In review")</dd>
+        </dl>
+    }
+</section>
+
+@code {
+    [Parameter] public Badge? SelectedBadge { get; set; }
+}

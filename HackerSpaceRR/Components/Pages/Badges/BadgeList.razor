@@ -1,0 +1,29 @@
+@if (Items is null)
+{
+    <p>Loading badges...</p>
+}
+else if (Items.Count == 0)
+{
+    <p>No badges available yet.</p>
+}
+else
+{
+    <ul class="list-group">
+        @foreach (var badge in Items)
+        {
+            <li @key="badge.Id" class="list-group-item">
+                @badge.Title — @(badge.IsVisible ? "Published" : "In review")
+                <button type="button" class="btn btn-sm btn-primary ms-2" @onclick="() => OnEdit.InvokeAsync(badge.Id)">Edit</button>
+                <button type="button" class="btn btn-sm btn-outline-primary ms-1" @onclick="() => OnView.InvokeAsync(badge)">View</button>
+                <button type="button" class="btn btn-sm btn-outline-danger ms-1" @onclick="() => OnDelete.InvokeAsync(badge)">Delete</button>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    [Parameter] public IReadOnlyList<Badge>? Items { get; set; }
+    [Parameter] public EventCallback<Guid> OnEdit { get; set; }
+    [Parameter] public EventCallback<Badge> OnView { get; set; }
+    [Parameter] public EventCallback<Badge> OnDelete { get; set; }
+}

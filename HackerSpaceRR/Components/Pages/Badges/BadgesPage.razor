@@ -7,28 +7,7 @@
 <h1>Badges</h1>
 <p>Here you can view and manage your badges.</p>
 
-@if (badges is null)
-{
-    <p>Loading badges...</p>
-}
-else if (badges.Count == 0)
-{
-    <p>No badges available yet.</p>
-}
-else
-{
-    <ul class="list-group">
-        @foreach (var badge in badges)
-        {
-            <li class="list-group-item">
-                @badge.Title — @(badge.IsVisible ? "Published" : "In review")
-                <button type="button" class="btn btn-sm btn-primary ms-2" @onclick="() => EditBadge(badge.Id)">Edit</button>
-                <button type="button" class="btn btn-sm btn-outline-primary ms-1" @onclick="() => ViewBadge(badge)">View</button>
-                <button type="button" class="btn btn-sm btn-outline-danger ms-1" @onclick="() => RequestDelete(badge)">Delete</button>
-            </li>
-        }
-    </ul>
-}
+<BadgeList Items="badges" OnEdit="EditBadge" OnView="ViewBadge" OnDelete="RequestDelete" />
 
 <button type="button" class="btn btn-success mt-3" @onclick="CreateBadge">Create New Badge</button>
 
@@ -41,23 +20,7 @@ else
     </div>
 }
 
-<section class="mt-4" aria-labelledby="badge-details-heading">
-    <h2 id="badge-details-heading">Badge details</h2>
-    @if (selectedBadge is null)
-    {
-        <p>Select a badge to see its details.</p>
-    }
-    else
-    {
-        <dl>
-            <dt>ID</dt><dd>@selectedBadge.Id</dd>
-            <dt>Title</dt><dd>@selectedBadge.Title</dd>
-            <dt>Description</dt><dd>@selectedBadge.Description</dd>
-            <dt>Turn-in instructions</dt><dd>@selectedBadge.TurnInInstructions</dd>
-            <dt>Visibility</dt><dd>@(selectedBadge.IsVisible ? "Published" : "In review")</dd>
-        </dl>
-    }
-</section>
+<BadgeDetails SelectedBadge="selectedBadge" />
 
 @code {
     private List<Badge>? badges;
