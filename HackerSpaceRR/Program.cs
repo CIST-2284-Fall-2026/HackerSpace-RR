@@ -17,6 +17,7 @@ builder.Services.AddRazorComponents()
     .AddAuthenticationStateSerialization();
 
 builder.Services.AddSingleton<IBadgesDAL, BadgesDALMock>();
+builder.Services.AddSingleton<IEvaluatorsDAL, EvaluatorsDALMock>();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityRedirectManager>();

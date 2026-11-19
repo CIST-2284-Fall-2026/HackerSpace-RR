@@ -1,0 +1,68 @@
+@page "/evaluators"
+@rendermode InteractiveServer
+@using HackerSpaceRR.Components.Shared
+@using HackerSpaceRR.Components.Dialogs
+@inject IEvaluatorsDAL EvaluatorsDAL
+
+<PageTitle>Evaluators</PageTitle>
+<h1>Evaluators</h1>
+
+<button type="button" class="btn btn-primary mb-3" @onclick="Add">Add evaluator</button>
+<ListView TModel="Evaluator" Items="evaluators">
+    <ItemTemplate Context="person">
+        <strong>@person.Name</strong> · @person.Email
+        <button type="button" class="btn btn-sm btn-primary ms-2" @onclick="() => Edit(person)">Edit</button>
+        <button type="button" class="btn btn-sm btn-outline-danger ms-1" @onclick="() => pendingDelete = person">Delete</button>
+    </ItemTemplate>
+</ListView>
+
+@if (draft is not null)
+{
+    <Modal Title="@(draft.Id == Guid.Empty ? "Add evaluator" : "Edit evaluator")">
+        <EditForm Model="draft" OnValidSubmit="Save">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <label class="form-label d-block">Name <InputText class="form-control" @bind-Value="draft.Name" /></label>
+            <label class="form-label d-block">Email <InputText class="form-control" type="email" @bind-Value="draft.Email" /></label>
+            <label class="form-label d-block">Background <InputTextArea class="form-control" @bind-Value="draft.Background" /></label>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-secondary" @onclick="() => draft = null">Cancel</button>
+        </EditForm>
+    </Modal>
+}
+
+<ConfirmDialog IsOpen="@(pendingDelete is not null)" Title="Delete evaluator"
+               OnConfirm="Delete" OnCancel="() => pendingDelete = null">
+    <p>Delete <strong>@(pendingDelete?.Name)</strong>?</p>
+</ConfirmDialog>
+
+@code {
+    private IReadOnlyList<Evaluator> evaluators = [];
+    private Evaluator? draft;
+    private Evaluator? pendingDelete;
+
+    protected override void OnInitialized() => Reload();
+    private void Reload() => evaluators = EvaluatorsDAL.GetAll();
+    private void Add() => draft = new();
+    private void Edit(Evaluator person) => draft = person with { };
+
+    private void Save()
+    {
+        if (draft is null)
+            return;
+
+        EvaluatorsDAL.Save(draft);
+        draft = null;
+        Reload();
+    }
+
+    private void Delete()
+    {
+        if (pendingDelete is null)
+            return;
+
+        EvaluatorsDAL.Delete(pendingDelete.Id);
+        pendingDelete = null;
+        Reload();
+    }
+}
